@@ -1,0 +1,1 @@
+The script uses the datascience Table abstraction along with Google Colab’s file upload interface. This code lets you upload your CSV parts, then reads, vertically stacks, and cleans the data (standardizing column names, removing duplicate rows, trimming string values, and dropping rows that are entirely missing) before saving the final cleaned dataset.

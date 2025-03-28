@@ -1,0 +1,24 @@
+How It Works
+Google Colab Upload:
+The script starts by importing the file upload module from Google Colab. When you run it, you’ll be prompted to upload all your CSV files.
+
+Loading Data:
+Each uploaded file is read into a datascience Table. The file names are sorted so that they’re processed in order if that matters.
+
+Merging Data:
+The Tables are combined vertically using Table.vstack(*tables), which works when each file shares the same column structure.
+
+Cleaning:
+
+Standardizing Column Names: The column names are stripped of extra spaces and converted to lowercase.
+
+Removing Duplicates: Duplicate rows are removed via the built-in unique() method.
+
+Removing Fully Empty Rows: Rows where every cell is missing (empty or None) are filtered out.
+
+Trimming String Values: For every cell that is a string, extra spaces are removed.
+
+Saving the Result:
+Finally, the cleaned merged dataset is saved as a CSV file.
+
+This code should run in a Google Colab notebook. Just ensure you upload all your CSV parts when prompted, and the cleaned dataset will be saved in your Colab environment.

@@ -1,0 +1,57 @@
+# Import Google Colab file upload functionality
+from google.colab import files
+uploaded = files.upload()  # Use the file chooser to upload all CSV parts
+
+# Import the datascience Table abstraction
+from datascience import Table
+
+# Get the list of uploaded filenames and sort them (if needed)
+file_names = sorted(uploaded.keys())
+print("Uploaded files:", file_names)
+
+# Read each CSV file into a Table and collect them in a list
+tables = []
+for file in file_names:
+    try:
+        t = Table.read_table(file)
+        tables.append(t)
+        print(f"Loaded {file} with {t.num_rows} rows.")
+    except Exception as e:
+        print(f"Error reading {file}: {e}")
+
+# Merge all Tables by stacking them vertically
+# (Assumes that all files have the same columns)
+merged_table = Table.vstack(*tables)
+print("Merged table has", merged_table.num_rows, "rows and", len(merged_table.labels), "columns.")
+
+# --- Cleaning Steps ---
+
+# 1. Standardize column names: strip whitespace and convert to lowercase
+clean_labels = [label.strip().lower() for label in merged_table.labels]
+merged_table = merged_table.relabeled(dict(zip(merged_table.labels, clean_labels)))
+print("Column names standardized.")
+
+# 2. Remove duplicate rows using the built-in unique() method
+merged_table = merged_table.unique()
+print("Removed duplicate rows. New row count:", merged_table.num_rows)
+
+# 3. Remove rows where all entries are missing (consider missing as empty strings or None)
+def row_is_empty(row):
+    return all(x == '' or x is None for x in row)
+
+clean_rows = [row for row in merged_table.rows if not row_is_empty(row)]
+merged_table = Table(merged_table.labels, clean_rows)
+print("Removed rows with all missing entries. New row count:", merged_table.num_rows)
+
+# 4. For each string column, strip leading and trailing whitespace from each cell
+cleaned_rows = []
+for row in merged_table.rows:
+    new_row = [x.strip() if isinstance(x, str) else x for x in row]
+    cleaned_rows.append(new_row)
+merged_table = Table(merged_table.labels, cleaned_rows)
+print("Trimmed whitespace from string columns.")
+
+# Save the cleaned merged dataset to a CSV file
+output_file = 'chicago_eclipse_data_cleaned.csv'
+merged_table.to_csv(output_file)
+print(f"Cleaned merged dataset saved as {output_file}")
