@@ -1,0 +1,101 @@
+# %% [code]
+# Import required libraries
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+from collections import Counter
+from datascience import Table
+
+# Assume merged_table is already available from the merging/cleaning steps.
+# If not, run the merging/cleaning code first.
+
+# Convert datascience Table to a pandas DataFrame for easier plotting
+df = pd.DataFrame({label: merged_table.column(label) for label in merged_table.labels})
+
+# --- Identify numeric and categorical columns ---
+
+def is_numeric_series(series):
+    numeric_count = 0
+    total = len(series)
+    for x in series:
+        try:
+            float(x)
+            numeric_count += 1
+        except:
+            continue
+    return numeric_count >= total / 2
+
+numeric_columns = [col for col in df.columns if is_numeric_series(df[col])]
+categorical_columns = [col for col in df.columns if col not in numeric_columns]
+
+print("Numeric columns identified:", numeric_columns)
+print("Categorical columns identified:", categorical_columns)
+
+# --- Visualizations ---
+
+# 1. Histograms for numeric columns
+for col in numeric_columns:
+    try:
+        # Convert to numeric (coerce errors to NaN and drop them)
+        numeric_data = pd.to_numeric(df[col], errors='coerce').dropna()
+        if numeric_data.empty:
+            continue
+        plt.figure(figsize=(8, 4))
+        plt.hist(numeric_data, bins=20, edgecolor='black')
+        plt.title(f'Histogram of {col}')
+        plt.xlabel(col)
+        plt.ylabel('Frequency')
+        plt.grid(True, linestyle='--', alpha=0.5)
+        plt.show()
+    except Exception as e:
+        print(f"Error plotting histogram for {col}: {e}")
+
+# 2. Bar charts for categorical columns (top 5 most frequent values)
+for col in categorical_columns:
+    try:
+        counts = df[col].value_counts().head(5)
+        if counts.empty:
+            continue
+        plt.figure(figsize=(8, 4))
+        counts.plot(kind='bar')
+        plt.title(f'Top 5 Frequent Values for {col}')
+        plt.xlabel(col)
+        plt.ylabel('Frequency')
+        plt.xticks(rotation=45)
+        plt.grid(True, linestyle='--', alpha=0.5)
+        plt.show()
+    except Exception as e:
+        print(f"Error plotting bar chart for {col}: {e}")
+
+# --- Generate a Text Report Summary ---
+
+report_lines = []
+report_lines.append("### Data Summary Report")
+report_lines.append(f"Total number of rows: {len(df)}")
+report_lines.append(f"Total number of columns: {len(df.columns)}\n")
+
+# Summary for numeric columns
+report_lines.append("#### Numeric Columns Summary")
+for col in numeric_columns:
+    numeric_data = pd.to_numeric(df[col], errors='coerce').dropna()
+    if numeric_data.empty:
+        continue
+    report_lines.append(f"**{col}:**")
+    report_lines.append(f" - Count: {len(numeric_data)}")
+    report_lines.append(f" - Mean: {numeric_data.mean():.2f}")
+    report_lines.append(f" - Std Dev: {numeric_data.std():.2f}")
+    report_lines.append(f" - Min: {numeric_data.min()}")
+    report_lines.append(f" - Median: {numeric_data.median()}")
+    report_lines.append(f" - Max: {numeric_data.max()}\n")
+
+# Summary for categorical columns
+report_lines.append("#### Categorical Columns Summary")
+for col in categorical_columns:
+    value_counts = df[col].value_counts()
+    top5 = value_counts.head(5).to_dict()
+    report_lines.append(f"**{col}:**")
+    report_lines.append(f" - Unique Values: {df[col].nunique()}")
+    report_lines.append(f" - Top 5 Frequent: {top5}\n")
+
+report_text = "\n".join(report_lines)
+print(report_text)

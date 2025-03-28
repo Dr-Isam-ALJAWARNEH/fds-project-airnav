@@ -1,0 +1,23 @@
+Below is an example Google Colab notebook cell that assumes you’ve already merged and cleaned your dataset into a datascience Table named merged_table (from the previous merging step). This code computes summary statistics for numeric columns and shows frequency counts for non‐numeric columns.
+
+Explanation
+Numeric Columns:
+For each column where at least half the entries can be converted to a number, the script computes:
+
+Count: Number of numeric entries
+
+Mean: Average value
+
+Standard Deviation: Measure of dispersion
+
+Min/Max: Minimum and maximum values
+
+Median, Q1, Q3: Central tendency and quartile values
+
+Categorical/Text Columns:
+For columns that are not predominantly numeric, the code displays the top five most common entries along with the total number of unique values.
+
+Overall Data Summary:
+The total number of rows and columns in the merged dataset is printed first, followed by the summary for each column.
+
+Run this cell in your Google Colab notebook (after merging and cleaning your data) to get an overview of your dataset’s summary statistics.
