@@ -10,5 +10,6 @@ Analyze and compare mobility patterns across NYC neighborhoods to understand the
 - Mera Alshamsi (member)
 - Asma Al Ali (member)
 
+## Project Status:
 ![Timeline Tasks Table](https://raw.githubusercontent.com/Dr-Isam-ALJAWARNEH/fds-project-airnav/refs/heads/main/Tasks3.PNG)
 
