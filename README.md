@@ -1,1 +1,15 @@
-...
+# AirNav
+
+## Project objective:
+Analyze and compare mobility patterns across NYC neighborhoods to understand their impact on local air quality. The study leverages statistical analysis, clustering, and regression techniques to identify neighborhood-specific trends and propose targeted interventions.
+
+## Team members:
+- Dr. Isam Al Jawarneh (supervisor)
+- Nawaf Alnaqbi (member)
+- Wafa Alyammahi (member)
+- Mera Alshamsi (member)
+- Asma Al Ali (member)
+
+## Project Status:
+![Timeline Tasks Table](https://raw.githubusercontent.com/Dr-Isam-ALJAWARNEH/fds-project-airnav/refs/heads/main/Tasks_Update_4.PNG)
+
