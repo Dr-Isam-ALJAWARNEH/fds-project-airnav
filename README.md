@@ -1,7 +1,7 @@
 # AirNav
 
 ## Project objective:
-Analyze and compare mobility patterns across NYC neighborhoods to understand their impact on local air quality. The study leverages statistical analysis, clustering, and regression techniques to identify neighborhood-specific trends and propose targeted interventions.
+To compare air quality patterns across NYC, Boston, and Chicago using geospatial analysis, statistical modeling, and clustering techniques in order to uncover city-specific pollution trends and environmental insights that can inform localized policy decisions.
 
 ## Team members:
 - Dr. Isam Al Jawarneh (supervisor)
